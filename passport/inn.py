@@ -1,4 +1,5 @@
 import requests
+from typing import Any
 
 
 def get_inn(fio: str, birth_date: str, passport: str) -> str:
@@ -13,7 +14,7 @@ def get_inn(fio: str, birth_date: str, passport: str) -> str:
 
     response = requests.post(url='https://service.nalog.ru/inn-proc.do', data={
         'c': "innMy",
-        "captcha": '',
+        'captcha': '',
         'captchaToken': '',
         'fam': family_name,
         'nam': first_name,
@@ -25,7 +26,6 @@ def get_inn(fio: str, birth_date: str, passport: str) -> str:
         'docdt': ''
     })
 
-    data = response.json()
-
     response.raise_for_status()
-    return data["inn"] if "inn" in data else "Не найден"
+    data: dict[str, Any] = response.json()
+    return data.get("inn", "")
