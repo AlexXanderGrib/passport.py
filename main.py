@@ -47,4 +47,17 @@ print(f'{Fore.YELLOW}🕰️ Примерная дата выдачи: {Fore.RED
 
 passport_for_inn = f'{passport[0:2]} {passport[2:4]} {passport[5:]}'
 
-print(f'{Fore.YELLOW}🧾 ИНН: {Fore.RED}{get_inn(fio, birth_date, passport_for_inn)}')
+
+try:
+    inn = get_inn(fio, birth_date, passport_for_inn)
+    print(f'{Fore.YELLOW}🧾 ИНН: {Fore.RED}{inn}')
+except Exception as e:
+    inn = None
+    print(f'{Fore.RED} Не удалось получить ИНН', e)
+
+if inn:
+    try:
+        if is_self_employed(inn):
+            print(f'{Fore.GREEN}🔨 Физ. лицо имеет статус самозанятого')
+    except Exception as e:
+        print(f'{Fore.RED} Не удалось статус самозанятости', e)
